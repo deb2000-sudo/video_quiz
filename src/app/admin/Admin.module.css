@@ -1,0 +1,244 @@
+/* src/app/admin/Admin.module.css */
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 16px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.viewQuizButton {
+  padding: 10px 20px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.viewQuizButton:hover {
+  background-color: #005bb5;
+}
+
+.section {
+  margin-bottom: 32px;
+  padding: 24px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.formGroup {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.select {
+  width: auto;
+  min-width: 200px;
+}
+
+.input[type='number'] {
+  width: 200px;
+}
+
+.notes {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 8px;
+}
+
+.validationMessage {
+  margin-top: 16px;
+}
+
+.validationMessage p {
+  margin: 4px 0;
+}
+
+.valid {
+  color: green;
+}
+
+.warning {
+  color: orange;
+  font-size: 0.9rem;
+}
+
+.optionInputContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.radio {
+  margin-right: 8px;
+}
+
+.addButton {
+  padding: 10px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+}
+
+.addButton:hover {
+  background-color: #218838;
+}
+
+.questionList {
+  list-style: none;
+  padding: 0;
+}
+
+.questionItem {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+
+.questionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.questionContent {
+  flex: 1;
+}
+
+.questionContent h4 {
+  margin: 0 0 8px 0;
+}
+
+.questionContent p {
+  margin: 8px 0;
+  font-weight: bold;
+}
+
+.questionContent ul {
+  margin: 0;
+  padding-left: 20px;
+  list-style: none;
+}
+
+.questionContent li {
+  color: #333;
+}
+
+.correctAnswer {
+  color: green !important;
+  font-weight: bold;
+}
+
+.removeButton {
+  padding: 4px 8px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: #c82333;
+}
+
+.saveButtonContainer {
+  text-align: center;
+}
+
+.saveButton {
+  padding: 12px 24px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1.125rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.saveButton:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.savedData {
+  margin-top: 32px;
+  padding: 20px;
+  border: 1px solid #28a745;
+  border-radius: 8px;
+  background: #d4edda;
+}
+
+.savedData h3 {
+  color: #155724;
+  margin-top: 0;
+}
+
+.savedData p {
+  margin: 8px 0;
+}
+
+.clearButton {
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.clearButton:hover {
+  background-color: #c82333;
+}
