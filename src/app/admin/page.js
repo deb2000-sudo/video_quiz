@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import styles from './Admin.module.css';
 
 export default function AdminPage() {
   const [videoLink, setVideoLink] = useState('');
@@ -11,7 +12,7 @@ export default function AdminPage() {
     time: '',
     question: '',
     options: ['', '', '', ''],
-    answer: 0
+    answer: 0,
   });
   const [savedData, setSavedData] = useState(null);
   const router = useRouter();
@@ -34,8 +35,6 @@ export default function AdminPage() {
       const match = url.match(regex);
       return match ? match[1] : null;
     } else if (type === 'gdrive') {
-      // Extract file ID from Google Drive share link
-      // Format: https://drive.google.com/file/d/FILE_ID/view?usp=sharing
       const regex = /\/file\/d\/([a-zA-Z0-9_-]+)/;
       const match = url.match(regex);
       return match ? match[1] : null;
@@ -57,14 +56,14 @@ export default function AdminPage() {
       const questionToAdd = {
         ...newQuestion,
         time: parseInt(newQuestion.time),
-        id: Date.now()
+        id: Date.now(),
       };
       setQuestions([...questions, questionToAdd]);
       setNewQuestion({
         time: '',
         question: '',
         options: ['', '', '', ''],
-        answer: 0
+        answer: 0,
       });
     }
   };
@@ -84,7 +83,7 @@ export default function AdminPage() {
       videoLink,
       videoType,
       videoId,
-      questions: questions.sort((a, b) => a.time - b.time)
+      questions: questions.sort((a, b) => a.time - b.time),
     };
     
     localStorage.setItem('quizData', JSON.stringify(quizData));
@@ -99,53 +98,33 @@ export default function AdminPage() {
   };
 
   return (
-    <div style={{ maxWidth: 1000, margin: '0 auto', padding: 24 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+    <div className={styles.container}>
+      <header className={styles.header}>
         <h1>Quiz Admin Panel</h1>
-        <button
-          onClick={() => router.push('/')}
-          style={{
-            padding: '8px 16px',
-            background: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer'
-          }}
-        >
+        <button onClick={() => router.push('/')} className={styles.viewQuizButton}>
           View Quiz
         </button>
-      </div>
+      </header>
 
-      {/* Video Link Section */}
-      <div style={{ marginBottom: 32, padding: 20, border: '1px solid #ddd', borderRadius: 8 }}>
+      <section className={styles.section}>
         <h2>Video Configuration</h2>
-        
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>
-            Video Type:
-          </label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Video Type:</label>
           <select
             value={videoType}
             onChange={(e) => {
               setVideoType(e.target.value);
-              setVideoLink(''); // Clear link when switching types
+              setVideoLink('');
             }}
-            style={{
-              padding: 8,
-              border: '1px solid #ccc',
-              borderRadius: 4,
-              fontSize: 16,
-              marginRight: 16
-            }}
+            className={styles.select}
           >
             <option value="youtube">YouTube</option>
             <option value="gdrive">Google Drive</option>
           </select>
         </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>
             {videoType === 'youtube' ? 'YouTube Video URL:' : 'Google Drive Video URL:'}
           </label>
           <input
@@ -157,212 +136,138 @@ export default function AdminPage() {
                 ? 'https://www.youtube.com/watch?v=...' 
                 : 'https://drive.google.com/file/d/.../view?usp=sharing'
             }
-            style={{
-              width: '100%',
-              padding: 12,
-              border: '1px solid #ccc',
-              borderRadius: 4,
-              fontSize: 16
-            }}
+            className={styles.input}
           />
-          <p style={{ fontSize: 14, color: '#666', marginTop: 8 }}>
+          <p className={styles.notes}>
             {videoType === 'youtube' 
               ? 'Enter a YouTube video URL'
-              : 'Enter a Google Drive shareable link to a video file (make sure it\'s publicly accessible)'
+              : "Enter a Google Drive shareable link to a video file (make sure it's publicly accessible)"
             }
           </p>
         </div>
         
         {videoLink && validateVideoLink(videoLink, videoType) && (
-          <div style={{ marginTop: 16 }}>
-            <p style={{ color: 'green' }}>✓ Valid {videoType === 'youtube' ? 'YouTube' : 'Google Drive'} URL detected</p>
+          <div className={styles.validationMessage}>
+            <p className={styles.valid}>✓ Valid {videoType === 'youtube' ? 'YouTube' : 'Google Drive'} URL detected</p>
             <p>Video ID: {extractVideoId(videoLink, videoType)}</p>
             {videoType === 'gdrive' && (
-              <p style={{ color: 'orange', fontSize: 14 }}>
+              <p className={styles.warning}>
                 ⚠️ Note: Google Drive videos will have playback restrictions to prevent skipping ahead
               </p>
             )}
           </div>
         )}
-      </div>
+      </section>
 
-      {/* Add Question Section */}
-      <div style={{ marginBottom: 32, padding: 20, border: '1px solid #ddd', borderRadius: 8 }}>
+      <section className={styles.section}>
         <h2>Add New Question</h2>
-        
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>
-            Timestamp (seconds):
-          </label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Timestamp (seconds):</label>
           <input
             type="number"
             value={newQuestion.time}
             onChange={(e) => setNewQuestion({ ...newQuestion, time: e.target.value })}
             placeholder="e.g., 30"
-            style={{
-              width: '200px',
-              padding: 8,
-              border: '1px solid #ccc',
-              borderRadius: 4
-            }}
+            className={styles.input}
           />
         </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>
-            Question:
-          </label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Question:</label>
           <input
             type="text"
             value={newQuestion.question}
             onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
             placeholder="Enter your question here"
-            style={{
-              width: '100%',
-              padding: 12,
-              border: '1px solid #ccc',
-              borderRadius: 4
-            }}
+            className={styles.input}
           />
         </div>
 
-        <div style={{ marginBottom: 16 }}>
-          <label style={{ display: 'block', marginBottom: 8, fontWeight: 'bold' }}>
-            Options:
-          </label>
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Options:</label>
           {newQuestion.options.map((option, index) => (
-            <div key={index} style={{ marginBottom: 8, display: 'flex', alignItems: 'center' }}>
+            <div key={index} className={styles.optionInputContainer}>
               <input
                 type="radio"
                 name="correctAnswer"
                 checked={newQuestion.answer === index}
                 onChange={() => setNewQuestion({ ...newQuestion, answer: index })}
-                style={{ marginRight: 8 }}
+                className={styles.radio}
               />
               <input
                 type="text"
                 value={option}
                 onChange={(e) => updateOption(index, e.target.value)}
                 placeholder={`Option ${index + 1}`}
-                style={{
-                  flex: 1,
-                  padding: 8,
-                  border: '1px solid #ccc',
-                  borderRadius: 4
-                }}
+                className={styles.input}
               />
             </div>
           ))}
-          <p style={{ fontSize: 14, color: '#666', marginTop: 8 }}>
+          <p className={styles.notes}>
             Select the radio button next to the correct answer
           </p>
         </div>
 
-        <button
-          onClick={addQuestion}
-          style={{
-            padding: '10px 20px',
-            background: '#28a745',
-            color: 'white',
-            border: 'none',
-            borderRadius: 4,
-            cursor: 'pointer',
-            fontSize: 16
-          }}
-        >
+        <button onClick={addQuestion} className={styles.addButton}>
           Add Question
         </button>
-      </div>
+      </section>
 
-      {/* Questions List */}
-      <div style={{ marginBottom: 32, padding: 20, border: '1px solid #ddd', borderRadius: 8 }}>
+      <section className={styles.section}>
         <h2>Questions ({questions.length})</h2>
         {questions.length === 0 ? (
-          <p style={{ color: '#666' }}>No questions added yet.</p>
+          <p>No questions added yet.</p>
         ) : (
-          <div>
+          <ul className={styles.questionList}>
             {questions
               .sort((a, b) => a.time - b.time)
               .map((q, index) => (
-                <div
-                  key={q.id}
-                  style={{
-                    marginBottom: 16,
-                    padding: 16,
-                    border: '1px solid #eee',
-                    borderRadius: 4,
-                    background: '#f9f9f9'
-                  }}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                    <div style={{ flex: 1 }}>
+                <li key={q.id} className={styles.questionItem}>
+                  <div className={styles.questionHeader}>
+                    <div className={styles.questionContent}>
                       <h4>Question {index + 1} (at {q.time}s)</h4>
-                      <p style={{ margin: '8px 0', fontWeight: 'bold' }}>{q.question}</p>
-                      <ul style={{ margin: 0, paddingLeft: 20 }}>
+                      <p>{q.question}</p>
+                      <ul>
                         {q.options.map((opt, idx) => (
                           <li
                             key={idx}
-                            style={{
-                              color: idx === q.answer ? 'green' : 'black',
-                              fontWeight: idx === q.answer ? 'bold' : 'normal'
-                            }}
+                            className={idx === q.answer ? styles.correctAnswer : ''}
                           >
                             {opt} {idx === q.answer && '✓'}
                           </li>
                         ))}
                       </ul>
                     </div>
-                    <button
-                      onClick={() => removeQuestion(q.id)}
-                      style={{
-                        padding: '4px 8px',
-                        background: '#dc3545',
-                        color: 'white',
-                        border: 'none',
-                        borderRadius: 4,
-                        cursor: 'pointer'
-                      }}
-                    >
+                    <button onClick={() => removeQuestion(q.id)} className={styles.removeButton}>
                       Remove
                     </button>
                   </div>
-                </div>
+                </li>
               ))}
-          </div>
+          </ul>
         )}
-      </div>
+      </section>
 
-      {/* Save Button */}
-      <div style={{ textAlign: 'center' }}>
+      <div className={styles.saveButtonContainer}>
         <button
           onClick={saveQuizData}
           disabled={!videoLink || questions.length === 0 || !validateVideoLink(videoLink, videoType)}
-          style={{
-            padding: '12px 24px',
-            background: videoLink && questions.length > 0 && validateVideoLink(videoLink, videoType) ? '#007bff' : '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: 4,
-            cursor: videoLink && questions.length > 0 && validateVideoLink(videoLink, videoType) ? 'pointer' : 'not-allowed',
-            fontSize: 18,
-            fontWeight: 'bold'
-          }}
+          className={styles.saveButton}
         >
           Save Quiz Configuration
         </button>
       </div>
 
-      {/* Current Configuration Display */}
       {savedData && (
-        <div style={{ marginTop: 32, padding: 20, border: '1px solid #28a745', borderRadius: 8, background: '#d4edda' }}>
-          <h3 style={{ color: '#155724' }}>Current Saved Configuration</h3>
+        <div className={styles.savedData}>
+          <h3>Current Saved Configuration</h3>
           <p><strong>Video Type:</strong> {savedData.videoType || 'youtube (legacy)'}</p>
           <p><strong>Video:</strong> {savedData.videoLink}</p>
           <p><strong>Video ID:</strong> {savedData.videoId}</p>
           <p><strong>Questions:</strong> {savedData.questions.length}</p>
           <p><strong>Passing Score:</strong> {Math.ceil(savedData.questions.length * 0.6)} out of {savedData.questions.length} (60%)</p>
           {savedData.videoType === 'gdrive' && (
-            <p style={{ color: '#856404', fontStyle: 'italic' }}>
+            <p className={styles.warning}>
               ⚠️ Google Drive video will have playback restrictions enabled
             </p>
           )}
@@ -377,15 +282,7 @@ export default function AdminPage() {
                 alert('Quiz data cleared successfully!');
               }
             }}
-            style={{
-              marginTop: 10,
-              padding: '8px 16px',
-              background: '#dc3545',
-              color: 'white',
-              border: 'none',
-              borderRadius: 4,
-              cursor: 'pointer'
-            }}
+            className={styles.clearButton}
           >
             Clear All Data
           </button>
